@@ -27,8 +27,6 @@ public class LoginActivityPresenterTest {
 
         user = new User("Fox","Mulder");
 
-//        when(mockLoginModel.getUser()).thenReturn(user);
-
         mockView = mock(LoginActivityMVP.View.class);
 
         presenter =  new LoginActivityPresenter(mockLoginModel);
@@ -98,7 +96,7 @@ public class LoginActivityPresenterTest {
     }
 
     @Test
-    public void shouldBeAbletoSaveAValidUser(){
+    public void shouldBeAbleToSaveAValidUser(){
         when(mockView.getFirstName()).thenReturn("Dana");
         when(mockView.getLastName()).thenReturn("Scully");
 
