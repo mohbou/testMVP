@@ -61,4 +61,52 @@ public class LoginActivityPresenterTest {
 
 
     }
+
+    @Test
+    public void shouldShowErrorMessageWhenUserIsNull() {
+        when(mockLoginModel.getUser()).thenReturn(null);
+
+        presenter.getCurrentUser();
+
+        verify(mockLoginModel,times(1)).getUser();
+
+        verify(mockView,never()).setFirstName("Fox");
+        verify(mockView,never()).setLastName("Mulder");
+        verify(mockView,times(1)).showUserNotAvailable();
+    }
+
+    @Test
+    public void shouldCreateErrorMessageIfFieldAreEmpty() {
+        when(mockView.getFirstName()).thenReturn(""); // empty String
+
+        presenter.loginButtonClicked();
+
+        verify(mockView,times(1)).getFirstName();
+        verify(mockView,never()).getLastName();
+        verify(mockView,times(1)).showInputError();
+
+        //Now tell mockView to return a value for first name and an empty Last name
+        when(mockView.getFirstName()).thenReturn("Dana");
+        when(mockView.getLastName()).thenReturn("");
+
+        presenter.loginButtonClicked();
+
+        verify(mockView,times(2)).getFirstName();
+        verify(mockView,times(1)).getLastName();
+        verify(mockView,times(2)).showInputError();
+
+    }
+
+    @Test
+    public void shouldBeAbletoSaveAValidUser(){
+        when(mockView.getFirstName()).thenReturn("Dana");
+        when(mockView.getLastName()).thenReturn("Scully");
+
+        presenter.loginButtonClicked();
+
+        verify(mockView,times(2)).getFirstName();
+        verify(mockView,times(2)).getLastName();
+        verify(mockLoginModel,times(1)).createUser("Dana","Scully");
+        verify(mockView,times(1)).showUserSavedMessage();
+    }
 }
